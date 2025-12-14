@@ -1,0 +1,192 @@
+\documentclass[a4j,dvipdfmx,10pt]{jresume}
+\usepackage[T1]{fontenc} % タイプ雷太隊の一部文字（_等）が数式フォントになることを避ける
+
+\usepackage{graphicx}
+\usepackage[top=25truemm,bottom=25truemm,left=25truemm,right=25truemm]{geometry}
+\usepackage{amsmath, amssymb, array, bm}
+\usepackage{algorithmic,algorithm}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{color} % コメント用
+\usepackage{ulem} % コメント用
+\normalem
+\usepackage[numbers,square,sort&compress]{natbib}
+\usepackage{hyperref}
+\usepackage{doi}
+\usepackage{siunitx}
+
+\setlength{\abovecaptionskip}{0pt}
+\setlength{\belowcaptionskip}{0pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%  User-defined commands  %%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\argmax}{\mathop{\rm arg~max}\limits}
+\newcommand{\argmin}{\mathop{\rm arg~min}\limits}
+
+\usepackage{theorem}
+\newtheorem{theo}{Theorem}[section]
+\newtheorem{defi}[theo]{Definition}
+\newtheorem{lemm}[theo]{Lemma}
+
+\renewcommand{\refname}{References}
+\renewcommand{\abstractname}{Abstract}
+\newcommand{\guide}[1]{\textcolor[rgb]{0,0,0.9}{#1}}
+
+%% コメント用
+% 添削時，変更部分の色を変えるのに使うと便利．
+% 使用例：本手法を適用することにより，\watanabe_erase{XX\%（変更前テキスト）}\watanabe{YY\%（変更後テキスト）}の性能向上を達成した．
+\newcommand{\mizushima}[1]{\textcolor[rgb]{0.9,0,0}{#1}}
+\DeclareRobustCommand{\mizushimaerase}{\bgroup\markoverwith{\textcolor[rgb]{0.9,0,0}{\rule[.5ex]{2pt}{0.8pt}}}\ULon}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagestyle{myresume}
+
+\begin{document}
+%%%%%     DATE     %%%%%
+\西暦 % この行の有無で年表示が変わる
+\markright{{\footnotesize 研究報告 \hfill {\today}}}
+
+
+%%%%%     TITLE     %%%%%
+\medskip
+\begin{center}
+  {\Large 題名\\}
+\end{center}
+
+
+%%%%%     AUTHOR     %%%%%
+\begin{flushright}
+  報告者： 修士2年生\;  水嶋亮太 \\
+  確認者：学年\; 氏名 \\
+\end{flushright}
+
+\guide{本資料はゼミ資料のテンプレートです．青字（\texttt{\textbackslash guide\{\}}）の指示に従い，各項目を記入してください．記入後は青字を削除してください．レポートは事前に確認者のチェックを受けて完成度を高めてください．}
+%%%%%%     BODY START     %%%%%
+\section{進捗と議論のポイント}
+\guide{進捗内容を簡潔にまとめた上で，ゼミで議論したい事項（困っている点，アイデアを求めたい点，判断を仰ぎたい点など）を箇条書きで10行程度記載してください．}\\
+\mizushima{このように先生が赤文字で指摘を行うことができます}
+\begin{itemize}
+  \item 例:調査を焼津で行い3個体のヨシキリザメにロガーをつけた
+  \item 例:黒潮の流れからタグを追跡するための理論を構築した
+  \item 例:統計的に優位のあるデータ解析を行った
+\end{itemize}
+
+
+\section{前回の振り返り}
+
+\subsection{計画の達成状況}
+\begin{itemize}
+  \item 
+  \item 
+\end{itemize}
+\subsection{未回答だった質問への対応}
+\begin{itemize}
+  \item 
+  \item 
+\end{itemize}
+
+
+\section{本文}
+\guide{進捗内容を自由な構成で記載してください．構成例：背景，設定，方法，結果，考察，課題など．図表や数式を活用し，\ref{sec:eqns} 節以降の例も参考にしてください．
+数式や図表，節の参照には\texttt{\textbackslash ref}を，文献の引用には\texttt{\textbackslash cite}（\texttt{\textbackslash citet, \textbackslash citep}を使いわける）を用いてください．}
+
+
+\section{今後の計画}
+\guide{必ず「いつまでに何をするか」を明記してください．期限のない計画は不可とします．}
+\begin{itemize}
+  \item 例：来週中に本資料で提案した変数選択手法を適用する．
+  \item 例：○月○日までに追加データでの再学習を行う．
+\end{itemize}
+
+
+\section{参考：数式の書き方}
+\label{sec:eqns}
+
+\subsection{状態空間モデル (State Space Model)}
+
+バイオロギングデータにおける経路推定の基礎となるモデルです\cite{jonsen2005robust, patterson2008state}。
+時刻 $t$ における真の状態（位置など）を $\mathbf{x}_t$、
+実際に得られた観測データ（GPSログなど）を $\mathbf{y}_t$ とすると、
+システムは以下の2つの式で記述されます。
+
+\begin{equation}
+    \begin{aligned}
+        \mathbf{x}_t &= \mathbf{F}_t \mathbf{x}_{t-1} + \mathbf{G}_t \mathbf{v}_t \quad (\text{状態方程式}) \\
+        \mathbf{y}_t &= \mathbf{H}_t \mathbf{x}_t + \mathbf{w}_t \quad (\text{観測方程式})
+    \end{aligned}
+\end{equation}
+
+ここで、$\mathbf{v}_t$ は過程ノイズ（動物の自発的な運動変化など）、
+$\mathbf{w}_t$ は観測ノイズ（センサー誤差など）を表し、
+それぞれガウス分布に従うと仮定することが一般的です\cite{auger2021guide}。
+
+\section{参考：図の挿入方法}
+
+論文では、図表を自動的に適切な位置に配置する機能（フロート）を使います。
+図\ref{fig:sample_plot}のように、ラベルを使って番号を参照することができます。
+
+\begin{figure}[htbp]
+    \centering
+    % width=0.8\linewidth で本文の幅の80%に調整
+    % figures/ フォルダにある sample.png を読み込む設定
+    \includegraphics[width=0.8\linewidth]{figures/drift_ensemble_282345.png}
+    
+    \caption{アザラシの潜水深度と移動速度の関係}
+    \label{fig:sample_plot} % 本文で参照するためのラベル
+\end{figure}
+
+\subsection{コードのポイント}
+\begin{itemize}
+    \item \texttt{width}: 図の大きさを指定します。\texttt{0.8\\linewidth} (本文幅の8割) が一般的です。
+    \item \texttt{label}: 図に名前を付けて、本文中から \texttt{\\ref\{\}} で番号を呼び出せるようにします。
+    \item \texttt{figures/}: 画像ファイルは散らからないように専用フォルダで管理するのがベストプラクティスです。
+\end{itemize}
+
+\section{参考：表の作成と参照}
+
+実験やシミュレーションの結果をまとめる際は、\texttt{table}環境を使用します。
+例えば漂流パッケージの予測シミュレーション結果（表\ref{tab:drift_stats}）をまとめると以下のようになります。
+
+\begin{table}[h]
+    \centering
+    % キャプションは表の上に置くのが一般的です
+    \caption{3日後の予測終点位置の統計解析結果}
+    \label{tab:drift_stats}
+    
+    % standardな書き方
+    \begin{tabular}{|l|l|}
+        \hline
+        \textbf{統計量} & \textbf{値} \\
+        \hline
+        平均終点緯度 & $34.334^\circ$N \\
+        平均終点経度 & $140.713^\circ$E \\
+        緯度の標準偏差 & $0.046^\circ$（約5.1 km） \\
+        経度の標準偏差 & $0.024^\circ$（約2.2 km） \\
+        予測の広がり（spread） & 5.76 km \\
+        平均移動距離 & 143.7 km \\
+        \hline
+    \end{tabular}
+\end{table}
+
+Excelの表を画像として貼るのではなく、LaTeXで直接表組をすることで、
+フォントの統一感が保たれ、拡大しても画質が劣化しません。
+
+
+%----------------------------------------------------------------------
+% References
+% 参考文献の表示は基本的にbibtexを用いる． 
+\bibliographystyle{unsrt}  % または日本語環境なら {junsrt}
+\bibliography{reference}
+\cite{jonsen2005robust}
+\cite{patterson2008state}
+\cite{auger2021guide}
+
+
+
+
+
+%=============================%
+
+\end{document}
